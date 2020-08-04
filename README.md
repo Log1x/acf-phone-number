@@ -22,7 +22,13 @@ Install via Composer:
 $ composer require log1x/acf-phone-number
 ```
 
+### Manual
+
+Download the release `.zip` and install into `wp-content/plugins`.
+
 ## Usage
+
+Pretty straight forward usage. No default settings on the field since it's smart.
 
 The field will return a handy object containing everything you need about your number:
 
@@ -42,10 +48,6 @@ The field will return a handy object containing everything you need about your n
   ]
 }
 ```
-
-### Manual
-
-Download the release `.zip` and install into `wp-content/plugins`.
 
 ## Bug Reports
 
