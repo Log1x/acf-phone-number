@@ -1,0 +1,30 @@
+{
+  "name": "log1x/acf-phone-number",
+  "type": "wordpress-plugin",
+  "description": "A real ACF phone number field.",
+  "keywords": [
+    "wordpress",
+    "acf",
+    "acf-field"
+  ],
+  "require": {
+    "php": ">=7.2",
+    "composer/installers": "~1.0",
+    "giggsey/libphonenumber-for-php": "8.12.7.1"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.4"
+  },
+  "scripts": {
+    "lint": [
+      "phpcs --ignore=vendor --exclude=PSR1.Methods.CamelCapsMethodName --extensions=php --standard=PSR12 ."
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

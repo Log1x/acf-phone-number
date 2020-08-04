@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "cross-env NODE_ENV=development webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "build:production": "npm run -s clean && cross-env NODE_ENV=production webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "clean": "npm run -s clean:dist",
+    "clean:dist": "rimraf dist"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "laravel-mix": "^5.0.4",
+    "rimraf": "^3.0.2",
+    "sass": "^1.26.10",
+    "sass-loader": "^9.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "dependencies": {
+    "intl-tel-input": "^17.0.3",
+    "jquery": "^3.5.1"
+  }
+}
