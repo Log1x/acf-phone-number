@@ -5,7 +5,7 @@
 
 A real ACF phone number field powered by [libphonenumber](https://github.com/giggsey/libphonenumber-for-php) and [intl-tel-input](https://github.com/jackocnr/intl-tel-input)
 
-![Screenshot](https://i.imgur.com/JlMFJnP.png)
+![Screenshot](https://i.imgur.com/ILmsBHr.gif)
 
 ## Requirements
 
@@ -21,10 +21,6 @@ Install via Composer:
 ```bash
 $ composer require log1x/acf-phone-number
 ```
-
-### Manual
-
-Download the release `.zip` and install into `wp-content/plugins`.
 
 ## Usage
 
