@@ -71,6 +71,13 @@ class PhoneNumber extends \acf_field
      */
     public function render_field($field)
     {
+        if (is_string($value = $field['value']) && ! empty(trim($value))) {
+            $field['value'] = [
+                'number' => $value,
+                'country' => '',
+            ];
+        }
+
         echo sprintf(
             '<input type="tel" name="%s[number]" value="%s" />',
             $field['name'],
@@ -153,49 +160,4 @@ class PhoneNumber extends \acf_field
         return $this->phone->isValidNumber($phone) ?
             $valid : 'The phone number entered is not valid.';
     }
-
-    /**
-     * This action is fired after a value has been deleted from the database.
-     *
-     * @param  mixed  $post_id
-     * @param  string $key
-     * @return void
-     */
-    // public function delete_value($post_id, $key)
-    // {
-    //
-    // }
-
-    /**
-     * This filter is applied to the $field after it is loaded from the database.
-     *
-     * @param  array $field
-     * @return array
-     */
-    // public function load_field($field)
-    // {
-    //     return $field;
-    // }
-
-    /**
-     * This filter is applied to the $field before it is saved to the database.
-     *
-     * @param  array $field
-     * @return array
-     */
-    // public function update_field($field)
-    // {
-    //     return $field;
-    // }
-
-    /**
-     * This action is fired after a field is deleted from the database.
-     *
-     * @param  array $field
-     * @return void
-     */
-    // public function delete_field($field)
-    // {
-    //     return $field;
-    // }
 }
