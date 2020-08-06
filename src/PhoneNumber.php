@@ -117,7 +117,7 @@ class PhoneNumber extends \acf_field
         try {
             $phone = $this->phone->parse($value['number'], $value['country']);
         } catch (NumberParseException $e) {
-            return $value;
+            return;
         }
 
         return (object) array_merge($value, [
