@@ -29,18 +29,10 @@ add_filter('after_setup_theme', new class {
     {
         foreach (['acf/include_field_types', 'acf/register_fields'] as $hook) {
             add_filter($hook, function () {
-                foreach (glob(__DIR__ . '/src/*.php') as $field) {
-                    $class = __NAMESPACE__ . '\\' . basename($field, '.php');
-
-                    spl_autoload_register(function () use ($field) {
-                        include_once $field;
-                    });
-
-                    return new $class([
-                        'uri' => plugin_dir_url(__FILE__),
-                        'path' => plugin_dir_path(__FILE__)
-                    ]);
-                }
+                return new \Log1x\AcfPhoneNumber\Fields\PhoneNumber([
+                    'uri' => plugin_dir_url(__FILE__),
+                    'path' => plugin_dir_path(__FILE__)
+                ]);
             });
         }
     }

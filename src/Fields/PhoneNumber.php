@@ -1,13 +1,8 @@
 <?php
 
-namespace Log1x\AcfPhoneNumber;
+namespace Log1x\AcfPhoneNumber\Fields;
 
-use libphonenumber\PhoneNumberUtil;
-use libphonenumber\PhoneNumberFormat;
-use libphonenumber\PhoneNumberToCarrierMapper;
-use libphonenumber\PhoneNumberToTimeZonesMapper;
-use libphonenumber\geocoding\PhoneNumberOfflineGeocoder;
-use libphonenumber\NumberParseException;
+use Log1x\AcfPhoneNumber\Phone;
 
 class PhoneNumber extends \acf_field
 {
@@ -47,7 +42,7 @@ class PhoneNumber extends \acf_field
     protected $settings;
 
     /**
-     * Create a new instance of AcfPhoneNumber.
+     * Create a new phone number field instance.
      *
      * @param  array $settings
      * @return void
@@ -55,10 +50,6 @@ class PhoneNumber extends \acf_field
     public function __construct($settings)
     {
         $this->settings = (object) $settings;
-        $this->phone = PhoneNumberUtil::getInstance();
-        $this->carrier = PhoneNumberToCarrierMapper::getInstance();
-        $this->location = PhoneNumberOfflineGeocoder::getInstance();
-        $this->timezone = PhoneNumberToTimeZonesMapper::getInstance();
 
         parent::__construct();
     }
@@ -114,22 +105,7 @@ class PhoneNumber extends \acf_field
      */
     public function format_value($value, $post_id, $field)
     {
-        try {
-            $phone = $this->phone->parse($value['number'], $value['country']);
-        } catch (NumberParseException $e) {
-            return;
-        }
-
-        return (object) array_merge($value, [
-            'uri' => 'tel:' . $this->phone->format($phone, PhoneNumberFormat::E164),
-            'e164' => $this->phone->format($phone, PhoneNumberFormat::E164),
-            'rfc3966' => $this->phone->format($phone, PhoneNumberFormat::RFC3966),
-            'national' => $this->phone->format($phone, PhoneNumberFormat::NATIONAL),
-            'international' => $this->phone->format($phone, PhoneNumberFormat::INTERNATIONAL),
-            'carrier' => $this->carrier->getNameForNumber($phone, 'en'),
-            'location' => $this->location->getDescriptionForNumber($phone, 'en_US'),
-            'timezone' => $this->timezone->getTimeZonesForNumber($phone),
-        ]);
+        return new Phone($value);
     }
 
     /**
@@ -143,21 +119,16 @@ class PhoneNumber extends \acf_field
      */
     public function validate_value($valid, $value, $field, $input)
     {
-        if (! is_array($value) || empty($value['number'])) {
+        if (! is_array($value) || empty($value['number']) || empty($value['country'])) {
             return 'The phone number entered is not valid.';
         }
 
-        if (empty($value['country'])) {
-            return 'The phone number country entered is not valid.';
-        }
+        $phone = new Phone($value);
 
-        try {
-            $phone = $this->phone->parse($value['number'], $value['country']);
-        } catch (NumberParseException $e) {
+        if (! $phone->exists() || ! $phone->isValid()) {
             return 'The phone number entered is not valid for this country.';
         }
 
-        return $this->phone->isValidNumber($phone) ?
-            $valid : 'The phone number entered is not valid.';
+        return $valid;
     }
 }
