@@ -133,6 +133,23 @@ class PhoneNumber extends \acf_field
     }
 
     /**
+     * This filter is applied to the $value before it is saved in the database.
+     *
+     * @param  mixed $value
+     * @param  mixed $post_id
+     * @param  array $field
+     * @return mixed
+     */
+    public function update_value($value, $post_id, $field)
+    {
+        if (! is_array($value) || empty($value['number'])) {
+            return;
+        }
+
+        return $value;
+    }
+
+    /**
      * This filter is used to perform validation on the value prior to saving.
      *
      * @param  boolean $valid
@@ -144,7 +161,7 @@ class PhoneNumber extends \acf_field
     public function validate_value($valid, $value, $field, $input)
     {
         if (! is_array($value) || empty($value['number'])) {
-            return 'The phone number entered is not valid.';
+            return $valid;
         }
 
         if (empty($value['country'])) {
