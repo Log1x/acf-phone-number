@@ -134,8 +134,7 @@ __webpack_require__.r(__webpack_exports__);
       var country = $(this).find('[name$="[country]"]');
       var tel = intl_tel_input__WEBPACK_IMPORTED_MODULE_0___default()(phone.get(0), {
         utilsScript: 'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js',
-        initialCountry: 'US',
-        preferredCountries: ['US'],
+        initialCountry: country.data('default-country') || 'us',
         formatOnDisplay: true,
         nationalMode: false
       });
@@ -1546,8 +1545,8 @@ module.exports = __webpack_require__(/*! ./build/js/intlTelInput */ "./node_modu
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/brandon/Development/acf-phone-number/assets/js/field.js */"./assets/js/field.js");
-module.exports = __webpack_require__(/*! /Users/brandon/Development/acf-phone-number/assets/css/field.scss */"./assets/css/field.scss");
+__webpack_require__(/*! /Users/brandon/Development/web/crediful/site/web/app/mu-plugins/acf-phone-number/assets/js/field.js */"./assets/js/field.js");
+module.exports = __webpack_require__(/*! /Users/brandon/Development/web/crediful/site/web/app/mu-plugins/acf-phone-number/assets/css/field.scss */"./assets/css/field.scss");
 
 
 /***/ })

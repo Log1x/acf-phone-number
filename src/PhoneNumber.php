@@ -2,6 +2,7 @@
 
 namespace Log1x\AcfPhoneNumber;
 
+use Locale;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
@@ -9,22 +10,59 @@ use libphonenumber\PhoneNumberToCarrierMapper;
 use libphonenumber\PhoneNumberToTimeZonesMapper;
 use libphonenumber\geocoding\PhoneNumberOfflineGeocoder;
 
-class Phone
+class PhoneNumber
 {
+    /**
+     * The phone number attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [];
+
+    /**
+     * The libphonenumber instance.
+     *
+     * @var \libphonenumber\PhoneNumberUtil;
+     */
+    protected $instance;
+
+    /**
+     * The parsed phone number object.
+     *
+     * @var object
+     */
+    protected $number;
+
     /**
      * Create a new phone number instance.
      *
-     * @param  array $field
      * @return void
      */
-    public function __construct($field = [])
+    public function __construct()
     {
-        $this->phone = PhoneNumberUtil::getInstance();
+        $this->instance = PhoneNumberUtil::getInstance();
+    }
+
+    /**
+     * Validate and parse the provided phone number.
+     *
+     * @param  mixed $value
+     * @return $this
+     */
+    public function parse($value = null)
+    {
+        if (
+            ! is_array($value) ||
+            empty($field['number']) ||
+            empty($field['country'])
+        ) {
+            return $this;
+        }
 
         try {
-            $this->number = $this->phone->parse($field['number'], $field['country']);
+            $this->number = $this->instance->parse($field['number'], $field['country']);
         } catch (NumberParseException $e) {
-            return;
+            //
         }
 
         return $this;
@@ -37,7 +75,7 @@ class Phone
      */
     public function uri()
     {
-        return 'tel:' . $this->phone->format(
+        return 'tel:' . $this->instance->format(
             $this->number,
             PhoneNumberFormat::E164
         );
@@ -50,7 +88,7 @@ class Phone
      */
     public function e164()
     {
-        return $this->phone->format(
+        return $this->instance->format(
             $this->number,
             PhoneNumberFormat::E164
         );
@@ -63,7 +101,7 @@ class Phone
      */
     public function rfc3966()
     {
-        return $this->phone->format(
+        return $this->instance->format(
             $this->number,
             PhoneNumberFormat::RFC3966
         );
@@ -76,7 +114,7 @@ class Phone
      */
     public function national()
     {
-        return $this->phone->format(
+        return $this->instance->format(
             $this->number,
             PhoneNumberFormat::NATIONAL
         );
@@ -89,7 +127,7 @@ class Phone
      */
     public function international()
     {
-        return $this->phone->format(
+        return $this->instance->format(
             $this->number,
             PhoneNumberFormat::INTERNATIONAL
         );
@@ -129,23 +167,29 @@ class Phone
     }
 
     /**
-     * Detmerine whether the current phone number is valid.
+     * Determine whether the current phone number is valid.
      *
      * @return bool
      */
     public function isValid()
     {
-        return $this->phone->isValidNumber($this->number);
+        return ! empty($this->number) && $this->instance->isValidNumber($this->number);
     }
 
     /**
-     * Determine whether a phone number is set.
+     * Return an array containing country locale.
      *
-     * @return bool
+     * @return array
      */
-    public function exists()
+    public function getCountries()
     {
-        return ! empty($this->number);
+        $countries = [];
+
+        foreach ($this->instance->getSupportedRegions() as $value) {
+            $countries[strtolower($value)] = Locale::getDisplayRegion('-' . $value, 'en');
+        }
+
+        return $countries;
     }
 
     /**
@@ -166,6 +210,6 @@ class Phone
      */
     public function __toString()
     {
-        return $this->rfc3966();
+        return $this->e164();
     }
 }
