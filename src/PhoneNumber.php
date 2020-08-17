@@ -13,13 +13,6 @@ use libphonenumber\geocoding\PhoneNumberOfflineGeocoder;
 class PhoneNumber
 {
     /**
-     * The phone number attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [];
-
-    /**
      * The libphonenumber instance.
      *
      * @var \libphonenumber\PhoneNumberUtil;
