@@ -8,6 +8,11 @@
     "acf",
     "acf-field"
   ],
+  "autoload": {
+    "psr-4": {
+      "Log1x\\AcfPhoneNumber\\": "src/"
+    }
+  },
   "require": {
     "php": ">=7.2",
     "composer/installers": "~1.0",

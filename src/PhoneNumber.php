@@ -2,179 +2,214 @@
 
 namespace Log1x\AcfPhoneNumber;
 
+use Locale;
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
+use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberToCarrierMapper;
 use libphonenumber\PhoneNumberToTimeZonesMapper;
 use libphonenumber\geocoding\PhoneNumberOfflineGeocoder;
-use libphonenumber\NumberParseException;
 
-class PhoneNumber extends \acf_field
+class PhoneNumber
 {
     /**
-     * Field Name
+     * The phone number attributes.
      *
-     * @var string
+     * @var array
      */
-    public $name = 'phone_number';
+    protected $attributes = [];
 
     /**
-     * Field Label
+     * The libphonenumber instance.
      *
-     * @var string
+     * @var \libphonenumber\PhoneNumberUtil;
      */
-    public $label = 'Phone Number';
+    protected $instance;
 
     /**
-     * The field type.
-     *
-     * @var string
-     */
-    public $type = 'phone';
-
-    /**
-     * Field Category
-     *
-     * @var string
-     */
-    public $category = 'basic';
-
-    /**
-     * Settings
+     * The parsed phone number object.
      *
      * @var object
      */
-    protected $settings;
+    protected $number;
 
     /**
-     * Create a new instance of AcfPhoneNumber.
-     *
-     * @param  array $settings
-     * @return void
-     */
-    public function __construct($settings)
-    {
-        $this->settings = (object) $settings;
-        $this->phone = PhoneNumberUtil::getInstance();
-        $this->carrier = PhoneNumberToCarrierMapper::getInstance();
-        $this->location = PhoneNumberOfflineGeocoder::getInstance();
-        $this->timezone = PhoneNumberToTimeZonesMapper::getInstance();
-
-        parent::__construct();
-    }
-
-    /**
-     * Create the HTML interface for your field.
-     *
-     * @param  array $field
-     * @return void
-     */
-    public function render_field($field)
-    {
-        if (is_string($value = $field['value']) && ! empty(trim($value))) {
-            $field['value'] = [
-                'number' => $value,
-                'country' => '',
-            ];
-        }
-
-        echo sprintf(
-            '<input type="tel" name="%s[number]" value="%s" />',
-            $field['name'],
-            $field['value']['number']
-        );
-
-        echo sprintf(
-            '<input type="hidden" name="%s[country]" value="%s" />',
-            $field['name'],
-            $field['value']['country']
-        );
-    }
-
-    /**
-     * This action is called in the admin_enqueue_scripts action on the edit screen where
-     * your field is created.
+     * Create a new phone number instance.
      *
      * @return void
      */
-    public function input_admin_enqueue_scripts()
+    public function __construct()
     {
-        wp_enqueue_script('acf-' . $this->name, $this->settings->uri . 'dist/js/field.js', ['acf-input'], null);
-        wp_enqueue_style('acf-' . $this->name, $this->settings->uri . 'dist/css/field.css', [], null);
+        $this->instance = PhoneNumberUtil::getInstance();
     }
 
     /**
-     * This filter is applied to the $value after it is loaded from the database and
-     * before it is returned to the template.
+     * Validate and parse the provided phone number.
      *
      * @param  mixed $value
-     * @param  mixed $post_id
-     * @param  array $field
-     * @return mixed
+     * @return $this
      */
-    public function format_value($value, $post_id, $field)
+    public function parse($value = null)
     {
-        try {
-            $phone = $this->phone->parse($value['number'], $value['country']);
-        } catch (NumberParseException $e) {
-            return;
-        }
-
-        return (object) array_merge($value, [
-            'uri' => 'tel:' . $this->phone->format($phone, PhoneNumberFormat::E164),
-            'e164' => $this->phone->format($phone, PhoneNumberFormat::E164),
-            'rfc3966' => $this->phone->format($phone, PhoneNumberFormat::RFC3966),
-            'national' => $this->phone->format($phone, PhoneNumberFormat::NATIONAL),
-            'international' => $this->phone->format($phone, PhoneNumberFormat::INTERNATIONAL),
-            'carrier' => $this->carrier->getNameForNumber($phone, 'en'),
-            'location' => $this->location->getDescriptionForNumber($phone, 'en_US'),
-            'timezone' => $this->timezone->getTimeZonesForNumber($phone),
-        ]);
-    }
-
-    /**
-     * This filter is applied to the $value before it is saved in the database.
-     *
-     * @param  mixed $value
-     * @param  mixed $post_id
-     * @param  array $field
-     * @return mixed
-     */
-    public function update_value($value, $post_id, $field)
-    {
-        if (! is_array($value) || empty($value['number'])) {
-            return;
-        }
-
-        return $value;
-    }
-
-    /**
-     * This filter is used to perform validation on the value prior to saving.
-     *
-     * @param  boolean $valid
-     * @param  mixed   $value
-     * @param  array   $field
-     * @param  array   $input
-     * @return boolean
-     */
-    public function validate_value($valid, $value, $field, $input)
-    {
-        if (! is_array($value) || empty($value['number'])) {
-            return $valid;
-        }
-
-        if (empty($value['country'])) {
-            return 'The phone number country entered is not valid.';
+        if (
+            ! is_array($value) ||
+            empty($field['number']) ||
+            empty($field['country'])
+        ) {
+            return $this;
         }
 
         try {
-            $phone = $this->phone->parse($value['number'], $value['country']);
+            $this->number = $this->instance->parse($field['number'], $field['country']);
         } catch (NumberParseException $e) {
-            return 'The phone number entered is not valid for this country.';
+            //
         }
 
-        return $this->phone->isValidNumber($phone) ?
-            $valid : 'The phone number entered is not valid.';
+        return $this;
+    }
+
+    /**
+     * Retrieve the phone number formatted for URI use.
+     *
+     * @return string
+     */
+    public function uri()
+    {
+        return 'tel:' . $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::E164
+        );
+    }
+
+    /**
+     * Retrieve the phone number formatted as E164.
+     *
+     * @return string
+     */
+    public function e164()
+    {
+        return $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::E164
+        );
+    }
+
+    /**
+     * Retrieve the phone number formatted as RFC3966.
+     *
+     * @return string
+     */
+    public function rfc3966()
+    {
+        return $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::RFC3966
+        );
+    }
+
+    /**
+     * Retrieve the phone number formatted for national use.
+     *
+     * @return string
+     */
+    public function national()
+    {
+        return $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::NATIONAL
+        );
+    }
+
+    /**
+     * Retrieve the phone number formatted for international use.
+     *
+     * @return string
+     */
+    public function international()
+    {
+        return $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::INTERNATIONAL
+        );
+    }
+
+    /**
+     * Retrieve the carrier for the current phone number.
+     *
+     * @return string
+     */
+    public function carrier()
+    {
+        return PhoneNumberToCarrierMapper::getInstance()
+            ->getNameForNumber($this->number, 'en');
+    }
+
+    /**
+     * Retrieve the location for the current phone number.
+     *
+     * @return string
+     */
+    public function location()
+    {
+        return PhoneNumberOfflineGeocoder::getInstance()
+            ->getDescriptionForNumber($this->number, 'en_US');
+    }
+
+    /**
+     * Retrieve the timezone for the current phone number.
+     *
+     * @return array
+     */
+    public function timezone()
+    {
+        return PhoneNumberToTimeZonesMapper::getInstance()
+            ->getTimeZonesForNumber($this->number);
+    }
+
+    /**
+     * Determine whether the current phone number is valid.
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        return ! empty($this->number) && $this->instance->isValidNumber($this->number);
+    }
+
+    /**
+     * Return an array containing country locale.
+     *
+     * @return array
+     */
+    public function getCountries()
+    {
+        $countries = [];
+
+        foreach ($this->instance->getSupportedRegions() as $value) {
+            $countries[strtolower($value)] = Locale::getDisplayRegion('-' . $value, 'en');
+        }
+
+        return $countries;
+    }
+
+    /**
+     * Dynamically retrieve the value of an attribute.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->{$key}();
+    }
+
+    /**
+     * Retrieve the phone number as a string.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->e164();
     }
 }
