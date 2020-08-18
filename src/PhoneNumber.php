@@ -193,6 +193,10 @@ class PhoneNumber
      */
     public function __get($key)
     {
+        if (! $this->isValid()) {
+            return;
+        }
+
         return $this->{$key}();
     }
 
