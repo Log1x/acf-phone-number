@@ -24,7 +24,7 @@ $ composer require log1x/acf-phone-number
 
 ## Usage
 
-Pretty straight forward usage. No default settings on the field since it's smart.
+Pretty straight forward usage. You can optionally set a default country.
 
 The field will return a handy object containing everything you need about your number:
 
@@ -43,6 +43,12 @@ The field will return a handy object containing everything you need about your n
     0 => "America/Chicago"
   ]
 }
+```
+
+### ACF Composer
+
+```php
+$field->addField('my_number_field', 'phone_number', ['default_country' => 'us']);
 ```
 
 ## Bug Reports

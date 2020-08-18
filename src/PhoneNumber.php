@@ -29,11 +29,16 @@ class PhoneNumber
     /**
      * Create a new phone number instance.
      *
+     * @param  string $number
      * @return void
      */
-    public function __construct()
+    public function __construct($number = null)
     {
         $this->instance = PhoneNumberUtil::getInstance();
+
+        if (! empty($number)) {
+            $this->parse($number);
+        }
     }
 
     /**
@@ -46,14 +51,14 @@ class PhoneNumber
     {
         if (
             ! is_array($value) ||
-            empty($field['number']) ||
-            empty($field['country'])
+            empty($value['number']) ||
+            empty($value['country'])
         ) {
             return $this;
         }
 
         try {
-            $this->number = $this->instance->parse($field['number'], $field['country']);
+            $this->number = $this->instance->parse($value['number'], $value['country']);
         } catch (NumberParseException $e) {
             //
         }
@@ -188,7 +193,7 @@ class PhoneNumber
     /**
      * Dynamically retrieve the value of an attribute.
      *
-     * @param  string  $key
+     * @param  string $key
      * @return mixed
      */
     public function __get($key)
@@ -207,6 +212,10 @@ class PhoneNumber
      */
     public function __toString()
     {
+        if (! $this->isValid()) {
+            return '';
+        }
+
         return $this->e164();
     }
 }

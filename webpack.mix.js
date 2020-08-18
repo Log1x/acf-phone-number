@@ -11,15 +11,14 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.setPublicPath('./dist');
-
-mix.js('assets/js/field.js', 'dist/js')
-   .sass('assets/css/field.scss', 'dist/css');
-
-mix.autoload({
-  jquery: ['$', 'window.jQuery'],
-});
-
-mix.options({
-  processCssUrls: false,
-});
+mix
+  .setPublicPath('./dist')
+  .js('assets/js/field.js', 'dist/js')
+  .sass('assets/css/field.scss', 'dist/css')
+  .options({
+    processCssUrls: false,
+  })
+  .autoload({
+    jquery: ['$', 'window.jQuery'],
+  })
+  .version();
