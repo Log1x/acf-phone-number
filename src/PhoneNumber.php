@@ -189,6 +189,29 @@ class PhoneNumber
 
         return $countries;
     }
+    
+    /**
+     * Convert the phone number properties to an array.
+     *
+     * @return array
+     */
+     public function toArray()
+     {
+        if (! $this->isValid()) {
+            return [];
+        }
+
+         return [
+            'uri' => $this->uri(),
+            'e164' => $this->e164(),
+            'rfc3966' => $this->rfc3966(),
+            'national' => $this->national(),
+            'international' => $this->international(),
+            'carrier' => $this->carrier(),
+            'location' => $this->location(),
+            'timezone' => $this->timezone(),
+         ];
+    }
 
     /**
      * Dynamically retrieve the value of an attribute.
