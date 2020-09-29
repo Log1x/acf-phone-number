@@ -10,6 +10,7 @@ A real ACF phone number field powered by [libphonenumber](https://github.com/gig
 ## Requirements
 
 - [PHP](https://secure.php.net/manual/en/install.php) >= 7.2
+- [PHP intl extension](https://www.php.net/manual/en/book.intl.php)
 - [Composer](https://getcomposer.org/download/)
 
 ## Installation
@@ -20,6 +21,15 @@ Install via Composer:
 
 ```bash
 $ composer require log1x/acf-phone-number
+```
+
+### Trellis
+
+This package requires the use of PHP's intl extension. Add the following to `group_vars/all/main.yml` and reprovision your environments:
+
+```yaml
+php_extensions_custom:
+  php7.4-intl: "{{ apt_package_state }}"
 ```
 
 ## Usage
