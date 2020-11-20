@@ -41,7 +41,7 @@ php_extensions_custom:
 
 Pretty straight forward usage. You can optionally set a default country.
 
-Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-number/blob/enhance/no-composer/src/PhoneNumber.php#L198) object containing everything you need about your number:
+Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-number/blob/master/src/PhoneNumber.php#L198) object containing everything you need about your number:
 
 ```php
 {
@@ -65,7 +65,9 @@ Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-
 If you are on Sage 10 and using my [ACF Composer](https://github.com/log1x/acf-composer) package:
 
 ```php
-$field->addField('my_number_field', 'phone_number', ['default_country' => 'us']);
+$field
+  ->addField('my_number_field', 'phone_number')
+    ->setConfig('default_country' => 'us');
 ```
 
 ## Bug Reports
