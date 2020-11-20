@@ -12,9 +12,9 @@ const mix = require('laravel-mix');
  */
 
 mix
-  .setPublicPath('./dist')
-  .js('assets/js/field.js', 'dist/js')
-  .sass('assets/css/field.scss', 'dist/css')
+  .setPublicPath('./public')
+  .js('assets/js/field.js', 'public/js')
+  .sass('assets/css/field.scss', 'public/css')
   .options({
     processCssUrls: false,
   })
