@@ -9,8 +9,7 @@ A real ACF phone number field powered by [libphonenumber](https://github.com/gig
 
 ## Requirements
 
-- [PHP](https://secure.php.net/manual/en/install.php) >= 7.2
-- [PHP intl extension](https://www.php.net/manual/en/book.intl.php)
+- [PHP](https://secure.php.net/manual/en/install.php) >= 7.2 (with [php-intl](https://www.php.net/manual/en/book.intl.php) installed)
 - [Composer](https://getcomposer.org/download/)
 
 ## Installation
@@ -23,20 +22,26 @@ Install via Composer:
 $ composer require log1x/acf-phone-number
 ```
 
+### Manual
+
+Download the release `.zip` and install into `wp-content/plugins`.
+
 ### Trellis
 
-This package requires the use of PHP's intl extension. Add the following to `group_vars/all/main.yml` and reprovision your environments:
+If you provision your server using Trellis, it does not come with `php-intl` installed out of the box.
+
+To add support for your Trellis projects, simply add the following lines to `group_vars/all/main.yml` and reprovision your environment(s).
 
 ```yaml
 php_extensions_custom:
-  php7.4-intl: "{{ apt_package_state }}"
+  php7.4-intl: '{{ apt_package_state }}'
 ```
 
 ## Usage
 
 Pretty straight forward usage. You can optionally set a default country.
 
-The field will return a handy object containing everything you need about your number:
+Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-number/blob/enhance/no-composer/src/PhoneNumber.php#L198) object containing everything you need about your number:
 
 ```php
 {
@@ -56,6 +61,8 @@ The field will return a handy object containing everything you need about your n
 ```
 
 ### ACF Composer
+
+If you are on Sage 10 and using my [ACF Composer](https://github.com/log1x/acf-composer) package:
 
 ```php
 $field->addField('my_number_field', 'phone_number', ['default_country' => 'us']);
