@@ -9,7 +9,7 @@ A real ACF phone number field powered by [libphonenumber](https://github.com/gig
 
 ## Requirements
 
-- [PHP](https://secure.php.net/manual/en/install.php) >= 7.2 (with [php-intl](https://www.php.net/manual/en/book.intl.php) installed)
+- [PHP](https://secure.php.net/manual/en/install.php) >= 7.2 (with [`php-intl`](https://www.php.net/manual/en/book.intl.php) installed)
 - [Composer](https://getcomposer.org/download/)
 
 ## Installation
