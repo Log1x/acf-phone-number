@@ -4,23 +4,22 @@
  * Plugin Name: Advanced Custom Fields: Phone Number
  * Plugin URI:  https://github.com/log1x/acf-phone-number
  * Description: A real ACF phone number field.
- * Version:     1.0.8
+ * Version:     1.1.0
  * Author:      Brandon Nifong
  * Author URI:  https://github.com/log1x
  */
 
 namespace Log1x\AcfPhoneNumber;
 
-if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
-    require $composer;
-}
-
-if (! class_exists('\libphonenumber\PhoneNumberUtil')) {
-    return;
-}
-
 add_filter('after_setup_theme', new class
 {
+    /**
+     * The asset public path.
+     *
+     * @var string
+     */
+    protected $assetPath = 'public';
+
     /**
      * Invoke the plugin.
      *
@@ -28,23 +27,42 @@ add_filter('after_setup_theme', new class
      */
     public function __invoke()
     {
+        require_once file_exists($composer = __DIR__ . '/vendor/autoload.php') ?
+            $composer :
+            __DIR__ . '/dist/autoload.php';
+
+        $this->register();
+
+        if (defined('ACP_FILE')) {
+            $this->hookAdminColumns();
+        }
+    }
+
+    /**
+     * Register the Phone Number field type with ACF.
+     *
+     * @return void
+     */
+    protected function register()
+    {
         foreach (['acf/include_field_types', 'acf/register_fields'] as $hook) {
             add_filter($hook, function () {
                 return new PhoneNumberField(
-                    plugin_dir_url(__FILE__) . 'dist',
-                    plugin_dir_path(__FILE__) . 'dist'
+                    plugin_dir_url(__FILE__) . $this->assetPath,
+                    plugin_dir_path(__FILE__) . $this->assetPath
                 );
             });
         }
+    }
 
-        /**
-         * Add basic Admin Columns Pro support to the phone number field.
-         *
-         * @param  mixed $value
-         * @param  int $id
-         * @param  \ACA\ACF\Column $column
-         * @return mixed
-         */
+    /**
+     * Hook the Admin Columns Pro plugin to provide basic field support
+     * if detected on the current WordPress installation.
+     *
+     * @return void
+     */
+    protected function hookAdminColumns()
+    {
         add_filter('ac/column/value', function ($value, $id, $column) {
             if (
                 ! is_a($column, '\ACA\ACF\Column') ||
@@ -56,4 +74,4 @@ add_filter('after_setup_theme', new class
             return get_field($column->get_meta_key())->national ?? $value;
         }, 10, 3);
     }
-}, 100);
+});

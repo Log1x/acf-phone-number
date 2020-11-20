@@ -5,14 +5,14 @@ namespace Log1x\AcfPhoneNumber;
 class PhoneNumberField extends \acf_field
 {
     /**
-     * Field Name
+     * The field name.
      *
      * @var string
      */
     public $name = 'phone_number';
 
     /**
-     * Field Label
+     * The field label.
      *
      * @var string
      */
@@ -26,27 +26,20 @@ class PhoneNumberField extends \acf_field
     public $type = 'phone';
 
     /**
-     * Field Category
+     * The field category.
      *
      * @var string
      */
     public $category = 'basic';
 
     /**
-     * Field Defaults
+     * The field defaults.
      *
      * @var array
      */
     public $defaults = [
         'country' => 'us',
     ];
-
-    /**
-     * Settings
-     *
-     * @var object
-     */
-    protected $settings;
 
     /**
      * Create a new phone number field instance.
