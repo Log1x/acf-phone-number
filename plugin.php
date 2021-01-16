@@ -27,9 +27,11 @@ add_filter('after_setup_theme', new class
      */
     public function __invoke()
     {
-        require_once file_exists($composer = __DIR__ . '/vendor/autoload.php') ?
-            $composer :
-            __DIR__ . '/dist/autoload.php';
+        if (! file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
+            return;
+        }
+
+        require_once $composer;
 
         $this->register();
 
