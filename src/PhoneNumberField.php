@@ -19,13 +19,6 @@ class PhoneNumberField extends \acf_field
     public $label = 'Phone Number';
 
     /**
-     * The field type.
-     *
-     * @var string
-     */
-    public $type = 'phone';
-
-    /**
      * The field category.
      *
      * @var string
