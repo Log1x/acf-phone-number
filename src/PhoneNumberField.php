@@ -45,7 +45,6 @@ class PhoneNumberField extends \acf_field
     {
         $this->uri = $uri;
         $this->path = $path;
-        $this->phoneNumber = new PhoneNumber();
 
         parent::__construct();
     }
@@ -95,7 +94,7 @@ class PhoneNumberField extends \acf_field
             'ui' => 1,
             'name' => 'default_country',
             'default_value' => $this->defaults['country'],
-            'choices' => $this->phoneNumber->getCountries()
+            'choices' => (new PhoneNumber())->getCountries()
         ]);
     }
 
@@ -122,7 +121,7 @@ class PhoneNumberField extends \acf_field
      */
     public function format_value($value, $post_id, $field)
     {
-        return $this->phoneNumber->parse($value);
+        return new PhoneNumber($value);
     }
 
     /**
@@ -161,7 +160,7 @@ class PhoneNumberField extends \acf_field
             return 'The phone number country entered is not valid.';
         }
 
-        return $this->phoneNumber->parse($value)->isValid() ?
+        return (new PhoneNumber($value))->isValid() ?
             $valid : 'The phone number entered is not valid.';
     }
 
