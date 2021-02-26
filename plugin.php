@@ -4,7 +4,7 @@
  * Plugin Name: Advanced Custom Fields: Phone Number
  * Plugin URI:  https://github.com/log1x/acf-phone-number
  * Description: A real ACF phone number field.
- * Version:     1.1.2
+ * Version:     1.1.3
  * Author:      Brandon Nifong
  * Author URI:  https://github.com/log1x
  */

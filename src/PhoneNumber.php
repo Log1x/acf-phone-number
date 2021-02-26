@@ -73,6 +73,10 @@ class PhoneNumber
      */
     public function uri()
     {
+        if (! $this->isValid()) {
+            return '';
+        }
+
         return 'tel:' . $this->instance->format(
             $this->number,
             PhoneNumberFormat::E164
@@ -86,6 +90,10 @@ class PhoneNumber
      */
     public function e164()
     {
+        if (! $this->isValid()) {
+            return '';
+        }
+
         return $this->instance->format(
             $this->number,
             PhoneNumberFormat::E164
@@ -99,6 +107,10 @@ class PhoneNumber
      */
     public function rfc3966()
     {
+        if (! $this->isValid()) {
+            return '';
+        }
+
         return $this->instance->format(
             $this->number,
             PhoneNumberFormat::RFC3966
@@ -112,6 +124,10 @@ class PhoneNumber
      */
     public function national()
     {
+        if (! $this->isValid()) {
+            return '';
+        }
+
         return $this->instance->format(
             $this->number,
             PhoneNumberFormat::NATIONAL
@@ -125,6 +141,10 @@ class PhoneNumber
      */
     public function international()
     {
+        if (! $this->isValid()) {
+            return '';
+        }
+
         return $this->instance->format(
             $this->number,
             PhoneNumberFormat::INTERNATIONAL
@@ -138,6 +158,10 @@ class PhoneNumber
      */
     public function carrier()
     {
+        if (! $this->isValid()) {
+            return '';
+        }
+
         return PhoneNumberToCarrierMapper::getInstance()
             ->getNameForNumber($this->number, 'en');
     }
@@ -149,6 +173,10 @@ class PhoneNumber
      */
     public function location()
     {
+        if (! $this->isValid()) {
+            return '';
+        }
+
         return PhoneNumberOfflineGeocoder::getInstance()
             ->getDescriptionForNumber($this->number, 'en_US');
     }
@@ -160,6 +188,10 @@ class PhoneNumber
      */
     public function timezone()
     {
+        if (! $this->isValid()) {
+            return [];
+        }
+
         return PhoneNumberToTimeZonesMapper::getInstance()
             ->getTimeZonesForNumber($this->number);
     }
@@ -202,15 +234,26 @@ class PhoneNumber
         }
 
         return [
-           'uri' => $this->uri(),
-           'e164' => $this->e164(),
-           'rfc3966' => $this->rfc3966(),
-           'national' => $this->national(),
-           'international' => $this->international(),
-           'carrier' => $this->carrier(),
-           'location' => $this->location(),
-           'timezone' => $this->timezone(),
+            'uri' => $this->uri(),
+            'e164' => $this->e164(),
+            'rfc3966' => $this->rfc3966(),
+            'national' => $this->national(),
+            'international' => $this->international(),
+            'carrier' => $this->carrier(),
+            'location' => $this->location(),
+            'timezone' => $this->timezone(),
         ];
+    }
+
+    /**
+     * Convert the phone number properties to JSON.
+     *
+     * @param  int  $options
+     * @return string
+     */
+    public function toJson($options = 0)
+    {
+        return json_encode($this->toArray(), $options);
     }
 
     /**
@@ -221,10 +264,6 @@ class PhoneNumber
      */
     public function __get($key)
     {
-        if (! $this->isValid()) {
-            return;
-        }
-
         return $this->{$key}();
     }
 
@@ -235,10 +274,6 @@ class PhoneNumber
      */
     public function __toString()
     {
-        if (! $this->isValid()) {
-            return '';
-        }
-
         return $this->e164();
     }
 }
