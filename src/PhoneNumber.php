@@ -29,14 +29,14 @@ class PhoneNumber
     /**
      * Create a new phone number instance.
      *
-     * @param  string $number
+     * @param  string  $number
      * @return void
      */
     public function __construct($number = null)
     {
         $this->instance = PhoneNumberUtil::getInstance();
 
-        if (! empty($number)) {
+        if (!empty($number)) {
             $this->parse($number);
         }
     }
@@ -44,13 +44,13 @@ class PhoneNumber
     /**
      * Validate and parse the provided phone number.
      *
-     * @param  mixed $value
+     * @param  mixed  $value
      * @return $this
      */
     public function parse($value = null)
     {
         if (
-            ! is_array($value) ||
+            !is_array($value) ||
             empty($value['number']) ||
             empty($value['country'])
         ) {
@@ -73,10 +73,11 @@ class PhoneNumber
      */
     public function uri()
     {
-        return 'tel:' . $this->instance->format(
-            $this->number,
-            PhoneNumberFormat::E164
-        );
+        return !$this->isValid() ? '' :
+            'tel:'.$this->instance->format(
+                $this->number,
+                PhoneNumberFormat::E164
+            );
     }
 
     /**
@@ -86,10 +87,11 @@ class PhoneNumber
      */
     public function e164()
     {
-        return $this->instance->format(
-            $this->number,
-            PhoneNumberFormat::E164
-        );
+        return !$this->isValid() ? '' :
+            $this->instance->format(
+                $this->number,
+                PhoneNumberFormat::E164
+            );
     }
 
     /**
@@ -99,10 +101,11 @@ class PhoneNumber
      */
     public function rfc3966()
     {
-        return $this->instance->format(
-            $this->number,
-            PhoneNumberFormat::RFC3966
-        );
+        return !$this->isValid() ? '' :
+            $this->instance->format(
+                $this->number,
+                PhoneNumberFormat::RFC3966
+            );
     }
 
     /**
@@ -112,10 +115,11 @@ class PhoneNumber
      */
     public function national()
     {
-        return $this->instance->format(
-            $this->number,
-            PhoneNumberFormat::NATIONAL
-        );
+        return !$this->isValid() ? '' :
+            $this->instance->format(
+                $this->number,
+                PhoneNumberFormat::NATIONAL
+            );
     }
 
     /**
@@ -125,10 +129,11 @@ class PhoneNumber
      */
     public function international()
     {
-        return $this->instance->format(
-            $this->number,
-            PhoneNumberFormat::INTERNATIONAL
-        );
+        return !$this->isValid() ? '' :
+            $this->instance->format(
+                $this->number,
+                PhoneNumberFormat::INTERNATIONAL
+            );
     }
 
     /**
@@ -138,8 +143,8 @@ class PhoneNumber
      */
     public function carrier()
     {
-        return PhoneNumberToCarrierMapper::getInstance()
-            ->getNameForNumber($this->number, 'en');
+        return !$this->isValid() ? '' :
+            PhoneNumberToCarrierMapper::getInstance()->getNameForNumber($this->number, 'en');
     }
 
     /**
@@ -149,8 +154,8 @@ class PhoneNumber
      */
     public function location()
     {
-        return PhoneNumberOfflineGeocoder::getInstance()
-            ->getDescriptionForNumber($this->number, 'en_US');
+        return !$this->isValid() ? '' :
+            PhoneNumberOfflineGeocoder::getInstance()->getDescriptionForNumber($this->number, 'en_US');
     }
 
     /**
@@ -160,8 +165,8 @@ class PhoneNumber
      */
     public function timezone()
     {
-        return PhoneNumberToTimeZonesMapper::getInstance()
-            ->getTimeZonesForNumber($this->number);
+        return !$this->isValid() ? [] :
+            PhoneNumberToTimeZonesMapper::getInstance()->getTimeZonesForNumber($this->number);
     }
 
     /**
@@ -171,7 +176,7 @@ class PhoneNumber
      */
     public function isValid()
     {
-        return ! empty($this->number) && $this->instance->isValidNumber($this->number);
+        return !empty($this->number) && $this->instance->isValidNumber($this->number);
     }
 
     /**
@@ -184,7 +189,7 @@ class PhoneNumber
         $countries = [];
 
         foreach ($this->instance->getSupportedRegions() as $value) {
-            $countries[strtolower($value)] = Locale::getDisplayRegion('-' . $value, 'en');
+            $countries[strtolower($value)] = Locale::getDisplayRegion('-'.$value, 'en');
         }
 
         return $countries;
@@ -197,31 +202,31 @@ class PhoneNumber
      */
     public function toArray()
     {
-        if (! $this->isValid()) {
+        if (!$this->isValid()) {
             return [];
         }
 
         return [
-           'uri' => $this->uri(),
-           'e164' => $this->e164(),
-           'rfc3966' => $this->rfc3966(),
-           'national' => $this->national(),
-           'international' => $this->international(),
-           'carrier' => $this->carrier(),
-           'location' => $this->location(),
-           'timezone' => $this->timezone(),
+            'uri' => $this->uri(),
+            'e164' => $this->e164(),
+            'rfc3966' => $this->rfc3966(),
+            'national' => $this->national(),
+            'international' => $this->international(),
+            'carrier' => $this->carrier(),
+            'location' => $this->location(),
+            'timezone' => $this->timezone(),
         ];
     }
 
     /**
      * Dynamically retrieve the value of an attribute.
      *
-     * @param  string $key
+     * @param  string  $key
      * @return mixed
      */
     public function __get($key)
     {
-        if (! $this->isValid()) {
+        if (!$this->isValid()) {
             return;
         }
 
@@ -235,7 +240,7 @@ class PhoneNumber
      */
     public function __toString()
     {
-        if (! $this->isValid()) {
+        if (!$this->isValid()) {
             return '';
         }
 
