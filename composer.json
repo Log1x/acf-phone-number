@@ -15,7 +15,6 @@
   },
   "require": {
     "php": ">=7.2",
-    "composer/installers": "~1.0",
     "giggsey/libphonenumber-for-php": "^8.12"
   },
   "require-dev": {
