@@ -29,14 +29,14 @@ class PhoneNumber
     /**
      * Create a new phone number instance.
      *
-     * @param  string  $number
+     * @param  string $number
      * @return void
      */
     public function __construct($number = null)
     {
         $this->instance = PhoneNumberUtil::getInstance();
 
-        if (!empty($number)) {
+        if (! empty($number)) {
             $this->parse($number);
         }
     }
@@ -44,13 +44,13 @@ class PhoneNumber
     /**
      * Validate and parse the provided phone number.
      *
-     * @param  mixed  $value
+     * @param  mixed $value
      * @return $this
      */
     public function parse($value = null)
     {
         if (
-            !is_array($value) ||
+            ! is_array($value) ||
             empty($value['number']) ||
             empty($value['country'])
         ) {
@@ -73,11 +73,14 @@ class PhoneNumber
      */
     public function uri()
     {
-        return !$this->isValid() ? '' :
-            'tel:' . $this->instance->format(
-                $this->number,
-                PhoneNumberFormat::E164
-            );
+        if (! $this->isValid()) {
+            return '';
+        }
+
+        return 'tel:' . $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::E164
+        );
     }
 
     /**
@@ -87,11 +90,14 @@ class PhoneNumber
      */
     public function e164()
     {
-        return !$this->isValid() ? '' :
-            $this->instance->format(
-                $this->number,
-                PhoneNumberFormat::E164
-            );
+        if (! $this->isValid()) {
+            return '';
+        }
+
+        return $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::E164
+        );
     }
 
     /**
@@ -101,11 +107,14 @@ class PhoneNumber
      */
     public function rfc3966()
     {
-        return !$this->isValid() ? '' :
-            $this->instance->format(
-                $this->number,
-                PhoneNumberFormat::RFC3966
-            );
+        if (! $this->isValid()) {
+            return '';
+        }
+
+        return $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::RFC3966
+        );
     }
 
     /**
@@ -115,11 +124,14 @@ class PhoneNumber
      */
     public function national()
     {
-        return !$this->isValid() ? '' :
-            $this->instance->format(
-                $this->number,
-                PhoneNumberFormat::NATIONAL
-            );
+        if (! $this->isValid()) {
+            return '';
+        }
+
+        return $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::NATIONAL
+        );
     }
 
     /**
@@ -129,11 +141,14 @@ class PhoneNumber
      */
     public function international()
     {
-        return !$this->isValid() ? '' :
-            $this->instance->format(
-                $this->number,
-                PhoneNumberFormat::INTERNATIONAL
-            );
+        if (! $this->isValid()) {
+            return '';
+        }
+
+        return $this->instance->format(
+            $this->number,
+            PhoneNumberFormat::INTERNATIONAL
+        );
     }
 
     /**
@@ -143,8 +158,12 @@ class PhoneNumber
      */
     public function carrier()
     {
-        return !$this->isValid() ? '' :
-            PhoneNumberToCarrierMapper::getInstance()->getNameForNumber($this->number, 'en');
+        if (! $this->isValid()) {
+            return '';
+        }
+
+        return PhoneNumberToCarrierMapper::getInstance()
+            ->getNameForNumber($this->number, 'en');
     }
 
     /**
@@ -154,8 +173,12 @@ class PhoneNumber
      */
     public function location()
     {
-        return !$this->isValid() ? '' :
-            PhoneNumberOfflineGeocoder::getInstance()->getDescriptionForNumber($this->number, 'en_US');
+        if (! $this->isValid()) {
+            return '';
+        }
+
+        return PhoneNumberOfflineGeocoder::getInstance()
+            ->getDescriptionForNumber($this->number, 'en_US');
     }
 
     /**
@@ -165,8 +188,12 @@ class PhoneNumber
      */
     public function timezone()
     {
-        return !$this->isValid() ? [] :
-            PhoneNumberToTimeZonesMapper::getInstance()->getTimeZonesForNumber($this->number);
+        if (! $this->isValid()) {
+            return [];
+        }
+
+        return PhoneNumberToTimeZonesMapper::getInstance()
+            ->getTimeZonesForNumber($this->number);
     }
 
     /**
@@ -176,7 +203,7 @@ class PhoneNumber
      */
     public function isValid()
     {
-        return !empty($this->number) && $this->instance->isValidNumber($this->number);
+        return ! empty($this->number) && $this->instance->isValidNumber($this->number);
     }
 
     /**
@@ -202,7 +229,7 @@ class PhoneNumber
      */
     public function toArray()
     {
-        if (!$this->isValid()) {
+        if (! $this->isValid()) {
             return [];
         }
 
@@ -219,17 +246,24 @@ class PhoneNumber
     }
 
     /**
+     * Convert the phone number properties to JSON.
+     *
+     * @param  int  $options
+     * @return string
+     */
+    public function toJson($options = 0)
+    {
+        return json_encode($this->toArray(), $options);
+    }
+
+    /**
      * Dynamically retrieve the value of an attribute.
      *
-     * @param  string  $key
+     * @param  string $key
      * @return mixed
      */
     public function __get($key)
     {
-        if (!$this->isValid()) {
-            return;
-        }
-
         return $this->{$key}();
     }
 
@@ -240,10 +274,6 @@ class PhoneNumber
      */
     public function __toString()
     {
-        if (!$this->isValid()) {
-            return '';
-        }
-
         return $this->e164();
     }
 }
