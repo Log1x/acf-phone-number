@@ -74,7 +74,7 @@ class PhoneNumber
     public function uri()
     {
         return !$this->isValid() ? '' :
-            'tel:'.$this->instance->format(
+            'tel:' . $this->instance->format(
                 $this->number,
                 PhoneNumberFormat::E164
             );
@@ -189,7 +189,7 @@ class PhoneNumber
         $countries = [];
 
         foreach ($this->instance->getSupportedRegions() as $value) {
-            $countries[strtolower($value)] = Locale::getDisplayRegion('-'.$value, 'en');
+            $countries[strtolower($value)] = Locale::getDisplayRegion('-' . $value, 'en');
         }
 
         return $countries;
