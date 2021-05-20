@@ -27,17 +27,6 @@ $ composer require log1x/acf-phone-number
 
 Download the release `.zip` and install into `wp-content/plugins`.
 
-### Trellis
-
-If you provision your server using Trellis, it does not come with `php-intl` installed out of the box.
-
-To add support for your Trellis projects, simply add the following lines to `group_vars/all/main.yml` and reprovision your environment(s).
-
-```yaml
-php_extensions_custom:
-  php7.4-intl: '{{ apt_package_state }}'
-```
-
 ## Usage
 
 Pretty straight forward usage. You can optionally set a default country.
