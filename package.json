@@ -6,13 +6,13 @@
     "build:production": "npx mix --production"
   },
   "devDependencies": {
-    "laravel-mix": "^6.0.19",
-    "postcss": "^8.2.15",
-    "sass": "^1.32.13",
-    "sass-loader": "^11.1.1"
+    "laravel-mix": "^6.0.27",
+    "postcss": "^8.3.6",
+    "sass": "^1.37.0",
+    "sass-loader": "^12.1.0"
   },
   "dependencies": {
-    "intl-tel-input": "^17.0.12",
+    "intl-tel-input": "^17.0.13",
     "jquery": "^3.6.0"
   }
 }
