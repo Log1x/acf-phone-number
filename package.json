@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "log1x-acf-phone-number",
+  "name": "acf-phone-number",
   "scripts": {
     "build": "npx mix",
     "build:production": "npx mix --production"
