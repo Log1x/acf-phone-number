@@ -31,7 +31,7 @@ Download the release `.zip` and install into `wp-content/plugins`.
 
 Pretty straight forward usage. You can optionally set a default country.
 
-Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-number/blob/master/src/PhoneNumber.php#L198) object containing everything you need about your number:
+Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-number/blob/master/src/PhoneNumber.php#L225-L246) object containing everything you need about your number:
 
 ```php
 {
