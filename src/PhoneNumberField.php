@@ -88,8 +88,8 @@ class PhoneNumberField extends \acf_field
     public function render_field_settings($field)
     {
         acf_render_field_setting($field, [
-            'label' => 'Default Country',
-            'instructions' => 'The default country value for the phone number.',
+            'label' => __('Default Country', 'acf-phone-number'),
+            'instructions' => __('The default country value for the phone number.', 'acf-phone-number'),
             'type' => 'select',
             'ui' => 1,
             'name' => 'default_country',
@@ -157,11 +157,11 @@ class PhoneNumberField extends \acf_field
         }
 
         if (empty($value['country'])) {
-            return 'The phone number country entered is not valid.';
+            return __('The phone number country specified is not valid.', 'acf-phone-number');
         }
 
         return (new PhoneNumber($value))->isValid() ?
-            $valid : 'The phone number entered is not valid.';
+            $valid : __('The phone number specified is not valid.', 'acf-phone-number');
     }
 
     /**
