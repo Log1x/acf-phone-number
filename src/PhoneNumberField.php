@@ -32,7 +32,6 @@ class PhoneNumberField extends \acf_field
      */
     public $defaults = [
         'country' => 'us',
-        'uri_scheme' => 'tel',
     ];
 
     /**
@@ -66,10 +65,6 @@ class PhoneNumberField extends \acf_field
             $field['value']['country'] = $field['default_country'] ?? $this->defaults['country'];
         }
 
-        if (empty($field['value']['uri_scheme'])) {
-            $field['value']['uri_scheme'] = $field['default_uri_scheme'] ?? $this->defaults['uri_scheme'];
-        }
-
         echo sprintf(
             '<input type="tel" name="%s[number]" value="%s" />',
             $field['name'],
@@ -81,13 +76,6 @@ class PhoneNumberField extends \acf_field
             $field['default_country'] ?? $this->defaults['country'],
             $field['name'],
             $field['value']['country'] ?? $field['default_country'] ?? $this->defaults['country']
-        );
-
-        echo sprintf(
-            '<input data-default-uri-scheme="%s" type="hidden" name="%s[uri_scheme]" value="%s" />',
-            $field['default_uri_scheme'] ?? $this->defaults['uri_scheme'],
-            $field['name'],
-            $field['value']['uri_scheme'] ?? $field['default_uri_scheme'] ?? $this->defaults['uri_scheme']
         );
     }
 
@@ -107,19 +95,6 @@ class PhoneNumberField extends \acf_field
             'name' => 'default_country',
             'default_value' => $this->defaults['country'],
             'choices' => (new PhoneNumber())->getCountries()
-        ]);
-
-        acf_render_field_setting($field, [
-            'label' => __('Default URI Scheme', 'acf-phone-number'),
-            'instructions' => __('The default URI scheme for the phone number.', 'acf-phone-number'),
-            'type' => 'select',
-            'ui' => 1,
-            'name' => 'default_uri_scheme',
-            'default_value' => $this->defaults['uri_scheme'],
-            'choices' => [
-                'tel' => 'Telephone',
-                'fax' => 'Fax',
-            ]
         ]);
     }
 

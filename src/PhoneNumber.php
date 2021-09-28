@@ -27,13 +27,6 @@ class PhoneNumber
     protected $number;
 
     /**
-     * The URI scheme.
-     *
-     * @var string
-     */
-    protected $uri_scheme;
-
-    /**
      * Create a new phone number instance.
      *
      * @param  string $number
@@ -70,8 +63,6 @@ class PhoneNumber
             //
         }
 
-        $this->uri_scheme = $value['uri_scheme'] ?? 'tel';
-
         return $this;
     }
 
@@ -86,7 +77,7 @@ class PhoneNumber
             return '';
         }
 
-        return $this->uri_scheme . ':' . $this->instance->format(
+        return 'tel:' . $this->instance->format(
             $this->number,
             PhoneNumberFormat::E164
         );
