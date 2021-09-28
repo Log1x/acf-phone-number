@@ -69,7 +69,7 @@ class PhoneNumberField extends \acf_field
         if (empty($field['value']['uri_scheme'])) {
             $field['value']['uri_scheme'] = $field['default_uri_scheme'] ?? $this->defaults['uri_scheme'];
         }
-        
+
         echo sprintf(
             '<input type="tel" name="%s[number]" value="%s" />',
             $field['name'],
@@ -82,13 +82,13 @@ class PhoneNumberField extends \acf_field
             $field['name'],
             $field['value']['country'] ?? $field['default_country'] ?? $this->defaults['country']
         );
-        
+
         echo sprintf(
             '<input data-default-uri-scheme="%s" type="hidden" name="%s[uri_scheme]" value="%s" />',
             $field['default_uri_scheme'] ?? $this->defaults['uri_scheme'],
             $field['name'],
             $field['value']['uri_scheme'] ?? $field['default_uri_scheme'] ?? $this->defaults['uri_scheme']
-        ); 
+        );
     }
 
     /**
@@ -119,7 +119,7 @@ class PhoneNumberField extends \acf_field
             'choices' => [
                 'tel' => 'Telephone',
                 'fax' => 'Fax',
-            ]                
+            ]
         ]);
     }
 

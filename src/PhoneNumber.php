@@ -55,7 +55,7 @@ class PhoneNumber
      * @return $this
      */
     public function parse($value = null)
-    {       
+    {
         if (
             ! is_array($value) ||
             empty($value['number']) ||
@@ -69,7 +69,7 @@ class PhoneNumber
         } catch (NumberParseException $e) {
             //
         }
-        
+
         $this->uri_scheme = $value['uri_scheme'] ?? 'tel';
 
         return $this;
