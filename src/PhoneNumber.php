@@ -69,8 +69,6 @@ class PhoneNumber
         } catch (NumberParseException $e) {
             //
         }
-
-        var_dump($value);
         
         $this->uri_scheme = $value['uri_scheme'] ?? 'tel';
 
