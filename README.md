@@ -29,7 +29,7 @@ Download the release `.zip` and install into `wp-content/plugins`.
 
 ## Usage
 
-Pretty straight forward usage. You can optionally set a default country and default URI scheme.
+Pretty straight forward usage. You can optionally set a default country.
 
 Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-number/blob/master/src/PhoneNumber.php#L225-L246) object containing everything you need about your number:
 
@@ -50,14 +50,6 @@ Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-
 }
 ```
 
-Alternatively, you can retrieve the phone number data by calling the object's available methods, such as `PhoneNumber->uri()`.
-
-```php
-<?php get_field('my_number_field)->uri(); ?>
-```
-
-To see the other methods available, view `src/PhoneNumber.php`.
-
 ### ACF Composer
 
 If you are on Sage 10 and using my [ACF Composer](https://github.com/log1x/acf-composer) package:
@@ -65,8 +57,7 @@ If you are on Sage 10 and using my [ACF Composer](https://github.com/log1x/acf-c
 ```php
 $field
   ->addField('my_number_field', 'phone_number')
-    ->setConfig('default_country', 'us')
-    ->setConfig('default_uri_scheme', 'tel');
+    ->setConfig('default_country', 'us');
 ```
 
 ## Bug Reports
