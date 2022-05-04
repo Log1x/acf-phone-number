@@ -66,7 +66,7 @@ add_filter('after_setup_theme', new class
         add_filter('ac/column/value', function ($value, $id, $column) {
             if (
                 ! is_a($column, '\ACA\ACF\Column') ||
-                $column->get_acf_field_option('type') !== 'phone_number'
+                $column->get_field_type() !== 'phone_number'
             ) {
                 return $value;
             }
