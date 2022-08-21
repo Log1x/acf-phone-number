@@ -153,7 +153,7 @@ class PhoneNumberField extends \acf_field
     public function validate_value($valid, $value, $field, $input)
     {
         if (! is_array($value) || empty($value['number'])) {
-            return $valid;
+            return __('The phone number cannot be empty.', 'acf-phone-number');
         }
 
         if (empty($value['country'])) {
