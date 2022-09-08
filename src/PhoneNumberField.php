@@ -152,16 +152,23 @@ class PhoneNumberField extends \acf_field
      */
     public function validate_value($valid, $value, $field, $input)
     {
-        if (! is_array($value) || empty($value['number'])) {
+        if (! empty($value['number']) && ! (new PhoneNumber($value))->isValid()) {
+            return __('The phone number specified is not valid.', 'acf-phone-number');
+        }
+
+        if (! $field['required']) {
+            return $valid;
+        }
+
+        if (empty($value['number'])) {
             return __('The phone number cannot be empty.', 'acf-phone-number');
         }
 
         if (empty($value['country'])) {
-            return __('The phone number country specified is not valid.', 'acf-phone-number');
+            return __('The phone number country cannot be empty.', 'acf-phone-number');
         }
 
-        return (new PhoneNumber($value))->isValid() ?
-            $valid : __('The phone number specified is not valid.', 'acf-phone-number');
+        return $valid;
     }
 
     /**
