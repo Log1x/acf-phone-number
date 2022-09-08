@@ -165,7 +165,7 @@ class PhoneNumberField extends \acf_field
         }
 
         if (empty($value['country'])) {
-            return __('The phone number country specified is not valid.', 'acf-phone-number');
+            return __('The phone number country cannot be empty.', 'acf-phone-number');
         }
 
         return $valid;
