@@ -90,6 +90,7 @@ class PhoneNumberField extends \acf_field
         acf_render_field_setting($field, [
             'label' => __('Default Country', 'acf-phone-number'),
             'instructions' => __('The default country value for the phone number.', 'acf-phone-number'),
+            'placeholder' => __('Select a default country...', 'acf-phone-number'),
             'type' => 'select',
             'ui' => 1,
             'name' => 'default_country',
