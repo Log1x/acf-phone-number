@@ -3,7 +3,7 @@ import intlTelInput from 'intl-tel-input'
 /**
  * Load Events
  */
-;(function($) {
+;(function ($) {
   if (typeof acf.add_action === 'undefined') {
     return
   }
@@ -18,35 +18,39 @@ import intlTelInput from 'intl-tel-input'
    * @param	 element jQuery element which contains the ACF fields
    * @return void
    */
-  acf.add_action('ready append', function(element) {
+  acf.add_action('ready append', function (element) {
     acf
       .get_fields(
         {
-          type: 'phone_number'
+          type: 'phone_number',
         },
         element
       )
-      .each(function() {
+      .each(function () {
         let phone = $(this).find('[name$="[number]"]')
         let country = $(this).find('[name$="[country]"]')
+
+        if (phone.length == 0 || country.length == 0) {
+          return
+        }
 
         let tel = intlTelInput(phone.get(0), {
           utilsScript:
             'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js',
           initialCountry: country.data('default-country') || 'us',
           formatOnDisplay: true,
-          nationalMode: false
+          nationalMode: false,
         })
 
         if (!country.val()) {
           country.val(tel.getSelectedCountryData().iso2)
         }
 
-        phone.on('countrychange', function() {
+        phone.on('countrychange', function () {
           country.val(tel.getSelectedCountryData().iso2)
         })
 
-        phone.on('keyup change', function() {
+        phone.on('keyup change', function () {
           if (typeof intlTelInputUtils === 'undefined') {
             return
           }
