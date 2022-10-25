@@ -37,7 +37,7 @@ import intlTelInput from 'intl-tel-input'
         let tel = intlTelInput(phone.get(0), {
           utilsScript:
             'https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js',
-          initialCountry: country.data('default-country') || 'us',
+          initialCountry: country.data('default-country') || 'US',
           formatOnDisplay: true,
           nationalMode: false,
         })

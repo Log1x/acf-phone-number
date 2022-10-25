@@ -31,7 +31,7 @@ class PhoneNumberField extends \acf_field
      * @var array
      */
     public $defaults = [
-        'country' => 'us',
+        'country' => 'US',
     ];
 
     /**
