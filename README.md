@@ -57,7 +57,7 @@ If you are on Sage 10 and using my [ACF Composer](https://github.com/log1x/acf-c
 ```php
 $field
   ->addField('my_number_field', 'phone_number')
-    ->setConfig('default_country', 'us');
+    ->setConfig('default_country', 'US');
 ```
 
 ## Bug Reports
