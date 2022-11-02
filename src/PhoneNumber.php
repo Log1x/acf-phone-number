@@ -58,7 +58,7 @@ class PhoneNumber
         }
 
         try {
-            $this->number = $this->instance->parse($value['number'], $value['country']);
+            $this->number = $this->instance->parse($value['number'], strtoupper($value['country']));
         } catch (NumberParseException $e) {
             //
         }

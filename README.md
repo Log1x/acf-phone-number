@@ -36,7 +36,7 @@ Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-
 ```php
 {
   +"number": "+1 405-867-5309"
-  +"country": "us"
+  +"country": "US"
   +"uri": "tel:+14058675309"
   +"e164": "+14058675309"
   +"rfc3966": "tel:+1-405-867-5309"
