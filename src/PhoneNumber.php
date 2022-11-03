@@ -27,6 +27,13 @@ class PhoneNumber
     protected $number;
 
     /**
+     * The phone number country.
+     *
+     * @return string
+     */
+    protected $country;
+
+    /**
      * Create a new phone number instance.
      *
      * @param  string $number
@@ -58,7 +65,10 @@ class PhoneNumber
         }
 
         try {
-            $this->number = $this->instance->parse($value['number'], strtoupper($value['country']));
+            $this->number = $this->instance->parse(
+                $value['number'],
+                $this->country = strtoupper($value['country'])
+            );
         } catch (NumberParseException $e) {
             //
         }
@@ -197,6 +207,20 @@ class PhoneNumber
     }
 
     /**
+     * Retrieve the country for the current phone number.
+     *
+     * @return string
+     */
+    public function country()
+    {
+        if (! $this->isValid()) {
+            return '';
+        }
+
+        return Locale::getDisplayRegion('-' . $this->country, 'en');
+    }
+
+    /**
      * Determine whether the current phone number is valid.
      *
      * @return bool
@@ -234,14 +258,16 @@ class PhoneNumber
         }
 
         return [
-            'uri' => $this->uri(),
-            'e164' => $this->e164(),
-            'rfc3966' => $this->rfc3966(),
-            'national' => $this->national(),
-            'international' => $this->international(),
             'carrier' => $this->carrier(),
+            'country' => $this->country(),
+            'e164' => $this->e164(),
+            'international' => $this->international(),
             'location' => $this->location(),
+            'national' => $this->national(),
+            'number' => $this->national(),
+            'rfc3966' => $this->rfc3966(),
             'timezone' => $this->timezone(),
+            'uri' => $this->uri(),
         ];
     }
 
