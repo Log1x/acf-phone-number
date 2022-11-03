@@ -31,23 +31,23 @@ Download the release `.zip` and install into `wp-content/plugins`.
 
 Pretty straight forward usage. You can optionally set a default country.
 
-Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-number/blob/master/src/PhoneNumber.php#L225-L246) object containing everything you need about your number:
+Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-number/blob/master/src/PhoneNumber.php#L254-L272) object containing everything you need about your number:
 
 ```php
-{
-  +"number": "+1 405-867-5309"
-  +"country": "US"
-  +"uri": "tel:+14058675309"
-  +"e164": "+14058675309"
-  +"rfc3966": "tel:+1-405-867-5309"
-  +"national": "(405) 867-5309"
-  +"international": "+1 405-867-5309"
-  +"carrier": ""
-  +"location": "Oklahoma"
-  +"timezone": array:1 [▼
+^ array:10 [
+  "carrier" => ""
+  "country" => "United States"
+  "e164" => "+14058675309"
+  "international" => "+1 405-867-5309"
+  "location" => "Oklahoma"
+  "national" => "(405) 867-5309"
+  "number" => "(405) 867-5309"
+  "rfc3966" => "tel:+1-405-867-5309"
+  "timezone" => array:1 [
     0 => "America/Chicago"
   ]
-}
+  "uri" => "tel:+14058675309"
+]
 ```
 
 ### ACF Composer
