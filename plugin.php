@@ -4,7 +4,7 @@
  * Plugin Name: Advanced Custom Fields: Phone Number
  * Plugin URI:  https://github.com/log1x/acf-phone-number
  * Description: A real ACF phone number field.
- * Version:     1.2.1
+ * Version:     1.2.2
  * Author:      Brandon Nifong
  * Author URI:  https://github.com/log1x
  */
@@ -52,15 +52,9 @@ add_filter('after_setup_theme', new class
 
         acf_register_field_type($field);
 
-        // Prevent problems with acf_format=standard
-        add_filter(
-            "acf/rest/format_value_for_rest/type={$field->name}",
-            function ($value_formatted, $post_id, $field, $value) {
-                return (new PhoneNumber($value))->toArray();
-            },
-            10,
-            4
-        );
+        add_filter("acf/rest/format_value_for_rest/type={$field->name}", function ($formatted, $post, $field, $value) {
+            return (new PhoneNumber($value))->toArray();
+        }, 10, 4);
     }
 
     /**
