@@ -45,14 +45,22 @@ add_filter('after_setup_theme', new class
      */
     protected function register()
     {
-        foreach (['acf/include_field_types', 'acf/register_fields'] as $hook) {
-            add_filter($hook, function () {
-                return new PhoneNumberField(
-                    plugin_dir_url(__FILE__) . $this->assetPath,
-                    plugin_dir_path(__FILE__) . $this->assetPath
-                );
-            });
-        }
+        $field = new PhoneNumberField(
+            plugin_dir_url(__FILE__) . $this->assetPath,
+            plugin_dir_path(__FILE__) . $this->assetPath
+        );
+
+        acf_register_field_type($field);
+
+        // Prevent problems with acf_format=standard
+        add_filter(
+            "acf/rest/format_value_for_rest/type={$field->name}",
+            function ($value_formatted, $post_id, $field, $value) {
+                return $value;
+            },
+            10,
+            4
+        );
     }
 
     /**
