@@ -56,7 +56,7 @@ add_filter('after_setup_theme', new class
         add_filter(
             "acf/rest/format_value_for_rest/type={$field->name}",
             function ($value_formatted, $post_id, $field, $value) {
-                return $value;
+                return (new PhoneNumber($value))->toArray();
             },
             10,
             4
