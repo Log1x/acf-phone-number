@@ -2,7 +2,7 @@
 
 ![Latest Stable Version](https://img.shields.io/packagist/v/log1x/acf-phone-number?style=flat-square)
 ![Total Downloads](https://img.shields.io/packagist/dt/log1x/acf-phone-number?style=flat-square)
-![Build Status](https://img.shields.io/github/workflow/status/log1x/acf-phone-number/Compatibility%20Checks?style=flat-square)
+![Build Status](https://img.shields.io/github/actions/workflow/status/log1x/acf-phone-number/compatibility.yml?branch=master&style=flat-square)
 
 A real ACF phone number field powered by [libphonenumber](https://github.com/giggsey/libphonenumber-for-php) and [intl-tel-input](https://github.com/jackocnr/intl-tel-input)
 
