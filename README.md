@@ -41,7 +41,6 @@ Calling the field will return an [arrayable](https://github.com/Log1x/acf-phone-
   "international" => "+1 405-867-5309"
   "location" => "Oklahoma"
   "national" => "(405) 867-5309"
-  "number" => "(405) 867-5309"
   "rfc3966" => "tel:+1-405-867-5309"
   "timezone" => array:1 [
     0 => "America/Chicago"
