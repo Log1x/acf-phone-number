@@ -31,6 +31,10 @@ add_filter('after_setup_theme', new class
             require_once $composer;
         }
 
+        if (! class_exists('acf_field')) {
+            return;
+        }
+
         $this->register();
 
         if (defined('ACP_FILE')) {
