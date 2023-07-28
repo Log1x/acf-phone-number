@@ -35,6 +35,20 @@ class PhoneNumberField extends \acf_field
     ];
 
     /**
+     * The field asset URI.
+     *
+     * @var string
+     */
+    public $uri;
+
+    /**
+     * The field asset path.
+     *
+     * @var string
+     */
+    public $path;
+
+    /**
      * Create a new phone number field instance.
      *
      * @param  string $uri
