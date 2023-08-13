@@ -32,6 +32,7 @@ class PhoneNumberField extends \acf_field
      */
     public $defaults = [
         'country' => 'us',
+        'placeholder' => '+1 555-555-5555',
     ];
 
     /**
@@ -80,9 +81,10 @@ class PhoneNumberField extends \acf_field
         }
 
         echo sprintf(
-            '<input type="tel" name="%s[number]" value="%s" />',
+            '<input type="tel" name="%s[number]" value="%s" placeholder="%s" />',
             $field['name'],
-            $field['value']['number']
+            $field['value']['number'],
+            $field['placeholder'] ?? $this->defaults['placeholder']
         );
 
         echo sprintf(
@@ -110,6 +112,14 @@ class PhoneNumberField extends \acf_field
             'name' => 'default_country',
             'default_value' => $this->defaults['country'],
             'choices' => (new PhoneNumber())->getCountries()
+        ]);
+
+        acf_render_field_setting($field, [
+            'label' => __('Placeholder', 'acf-phone-number'),
+            'instructions' => __('The placeholder text for the phone number.', 'acf-phone-number'),
+            'type' => 'text',
+            'name' => 'placeholder',
+            'default_value' => $this->defaults['placeholder'],
         ]);
     }
 
