@@ -211,4 +211,19 @@ class PhoneNumberField extends \acf_field
 
         return $this->uri . ($manifest[$asset] ?? $asset);
     }
+
+    public function get_rest_schema( $field ) {
+        return array(
+            'type'       => array( 'object', 'null' ),
+            'required'   => ! empty( $field['required'] ),
+            'properties' => array(
+                'country' => array(
+                    'type' => 'string',
+                ),
+                'number' => array(
+                    'type' => array( 'string', 'int' ),
+                ),
+            ),
+        );
+    }
 }
