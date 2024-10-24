@@ -33,6 +33,7 @@ class PhoneNumberField extends \acf_field
     public $defaults = [
         'country' => 'us',
         'placeholder' => '+1 555-555-5555',
+        'return_format' => 'object',
     ];
 
     /**
@@ -121,6 +122,18 @@ class PhoneNumberField extends \acf_field
             'name' => 'placeholder',
             'default_value' => $this->defaults['placeholder'],
         ]);
+
+        acf_render_field_setting($field, [
+            'label' => __('Return Format', 'acf-phone-number'),
+            'instructions' => __('The format that the phone number will be returned in.', 'acf-phone-number'),
+            'type' => 'select',
+            'name' => 'return_format',
+            'choices' => [
+                'object' => __('Object', 'acf-phone-number'),
+                'array' => __('Array', 'acf-phone-number'),
+            ],
+            'default_value' => $this->defaults['return_format'],
+        ]);
     }
 
     /**
@@ -146,7 +159,12 @@ class PhoneNumberField extends \acf_field
      */
     public function format_value($value, $post_id, $field)
     {
-        return new PhoneNumber($value);
+        $number = new PhoneNumber($value);
+
+        return match ($field['return_format'] ?? $this->defaults['return_format']) {
+            'array' => $number->toArray(),
+            default => $number,
+        };
     }
 
     /**
