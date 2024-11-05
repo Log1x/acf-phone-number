@@ -160,11 +160,13 @@ class PhoneNumberField extends \acf_field
     public function format_value($value, $post_id, $field)
     {
         $number = new PhoneNumber($value);
+        $format = $field['return_format'] ?? $this->defaults['return_format'];
 
-        return match ($field['return_format'] ?? $this->defaults['return_format']) {
-            'array' => $number->toArray(),
-            default => $number,
-        };
+        if ($format === 'array') {
+            return $number->toArray();
+        }
+
+        return $number;
     }
 
     /**
